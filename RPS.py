@@ -4,6 +4,9 @@ from time import sleep
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        self.wins = 0
+        self.loses = 0
+        self.draws = 0
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1150, 950)
         MainWindow.setMaximumSize(QtCore.QSize(1150, 950))
@@ -22,9 +25,54 @@ class Ui_MainWindow(object):
                                 "    padding-left: 10px;\n"
                                 "    padding-right: 10px;\n"
                                 "    border-radius: 4px;\n"
-                                "}\n")
+                                "}"
+                                "QPushButton:hover{color: white;}\n")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+        self.score_board = QtWidgets.QGroupBox(self.centralwidget)
+        self.score_board.setGeometry(QtCore.QRect(10, 20, 231, 201))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.score_board.setFont(font)
+        self.score_board.setObjectName("score_board")
+
+        self.win_label = QtWidgets.QLabel(self.score_board)
+        self.win_label.setGeometry(QtCore.QRect(10, 30, 83, 40))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.win_label.setFont(font)
+        self.win_label.setObjectName("win_label")
+
+        self.lose_label = QtWidgets.QLabel(self.score_board)
+        self.lose_label.setGeometry(QtCore.QRect(10, 90, 83, 40))
+        self.lose_label.setFont(font)
+        self.lose_label.setObjectName("lose_label")
+
+        self.draw_label = QtWidgets.QLabel(self.score_board)
+        self.draw_label.setGeometry(QtCore.QRect(10, 150, 88, 40))
+        self.draw_label.setFont(font)
+        self.draw_label.setObjectName("draw_label")
+
+        self.win_count = QtWidgets.QLabel(self.score_board)
+        self.win_count.setGeometry(QtCore.QRect(100, 30, 61, 40))
+        self.win_count.setFont(font)
+        self.win_count.setText(str(self.wins))
+        self.win_count.setObjectName("win_count")
+
+        self.draw_count = QtWidgets.QLabel(self.score_board)
+        self.draw_count.setGeometry(QtCore.QRect(100, 150, 61, 40))
+        self.draw_count.setFont(font)
+        self.draw_count.setObjectName("draw_count")
+        self.draw_count.setText(str(self.draws))
+
+        self.lose_count = QtWidgets.QLabel(self.score_board)
+        self.lose_count.setGeometry(QtCore.QRect(100, 90, 61, 40))
+        self.lose_count.setFont(font)
+        self.lose_count.setText(str(self.loses))
+        self.lose_count.setObjectName("lose_count")
 
         self.scissors_btn = QtWidgets.QPushButton(self.centralwidget)
         self.scissors_btn.setGeometry(QtCore.QRect(870, 500, 231, 311))
@@ -91,18 +139,16 @@ class Ui_MainWindow(object):
         self.paper_btn.setIconSize(QtCore.QSize(231, 311))
         self.paper_btn.setObjectName("paper_btn")
 
-        ########## This button is for testing purpose ##########
         self.reset = QtWidgets.QPushButton(self.centralwidget)
         self.reset.setGeometry(QtCore.QRect(460, 850, 250, 70))
         self.reset.setAutoFillBackground(False)
-        ont = QtGui.QFont()
+        font = QtGui.QFont()
         font.setPointSize(24)
         self.reset.setFont(font)
         self.reset.setText("Play again")
         self.reset.setObjectName("reset")
         self.reset.clicked.connect(self.reset_ui)
         self.reset.setEnabled(False)
-        #######################################################
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.random_card = self.rock_card
@@ -155,18 +201,24 @@ class Ui_MainWindow(object):
         winner = self.compare([card, self.random_card])
         if card == winner:
             self.label.setText(" YOU WIN !!")
+            self.wins += 1
             self.label.setStyleSheet("color:rgb(48, 150, 54);\n")
         elif winner == 0:
             self.label.setText("       Draw")
+            self.draws += 1
             self.label.setStyleSheet("color:rgb(116, 116, 116);\n")
         elif self.random_card == winner:
             self.label.setText(" YOU LOSE !!")      
+            self.loses += 1
             self.label.setStyleSheet("color:rgb(230, 0, 0);\n")
 
         self.reset.setEnabled(True)
         self.rock_btn.setEnabled(False)
         self.paper_btn.setEnabled(False)
         self.scissors_btn.setEnabled(False)
+        self.win_count.setText(str(self.wins))
+        self.lose_count.setText(str(self.loses))
+        self.draw_count.setText(str(self.draws))
 
     
     def reset_ui(self):
@@ -182,6 +234,7 @@ class Ui_MainWindow(object):
         self.scissors_btn.setEnabled(True)
 
 
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Rock Paper Scissors"))
@@ -189,6 +242,14 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Pick a card!"))
         self.rock_btn.setToolTip(_translate("MainWindow", "<html><head/><body><p>choose ROCK !</p></body></html>"))
         self.paper_btn.setToolTip(_translate("MainWindow", "<html><head/><body><p>choose paper</p></body></html>"))
+        self.score_board.setTitle(_translate("MainWindow", "Score Board"))
+        self.win_label.setText(_translate("MainWindow", "Win:"))
+        self.lose_label.setText(_translate("MainWindow", "Lose:"))
+        self.draw_label.setText(_translate("MainWindow", "Draw:"))
+        
+        
+
+
 
 if __name__ == "__main__":
     import sys
